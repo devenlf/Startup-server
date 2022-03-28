@@ -30,10 +30,10 @@ const transporter = nodeMailer.createTransport({
 class LoginController extends Controller {
   async index() {
     const { ctx } = this;
-    this.logger.info(ctx.request.body,'request')
+    this.logger.info(ctx.request.body,'register request')
     const {userName,account,email,pass,pass1,vcode } = ctx.request.body
     let codeValue = await this.app.redis.get(email)
-    if(!userName&&!account&&!email&&!pass&&!pass1&&vcode){
+    if(!userName||!account||!email||!pass||!pass1||!vcode){
       ctx.body={
         state: -1,
         message: '请检查输入格式'
@@ -86,9 +86,10 @@ class LoginController extends Controller {
     const { ctx } = this;
     this.logger.info(ctx.request.body,'request')
     const { email } = ctx.request.body
+    console.log(ctx.request.body,'ctx.request.bodyctx.request.body.request.bodymail')
     const reg = /^(?=.*@)(?=.*\.)[^@.].*[^@.]$/;
     let options = '';
-    this.logger.info('tools',)
+    this.logger.info(email,'email',)
     if(reg.test(email)){
       let code = tools.randomCode()
       options = EmailOptions(email,code)
